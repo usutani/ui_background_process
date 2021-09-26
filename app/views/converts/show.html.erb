@@ -1,0 +1,10 @@
+<p id="notice"><%= notice %></p>
+
+<%= render @convert %>
+
+<div>
+  <%= link_to "Edit this convert", edit_convert_path(@convert) %> |
+  <%= link_to "Back to converts", converts_path %>
+
+  <%= button_to "Destroy this convert", convert_path(@convert), method: :delete %>
+</div>
