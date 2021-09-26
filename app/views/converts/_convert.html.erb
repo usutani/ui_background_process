@@ -1,15 +1,8 @@
-<div id="<%= dom_id convert %>" class="scaffold_record">
-  <p>
-    <strong>Status:</strong>
-    <%= convert.status %>
-  </p>
-
-  <p>
-    <strong>Message:</strong>
-    <%= convert.message %>
-  </p>
-
-  <p>
-    <%= link_to "Show this convert", convert %>
-  </p>
-</div>
+<%= tag.li id: convert.id do %>
+  <%= tag.span convert.status_summary %>
+  <%= tag.span do %>
+    <% out_file_path = rails_blob_path(convert.out_file) if convert.out_file.attached? %>
+    <%= link_to_if(convert.succeeded?, 'Download', out_file_path) { "N/A" } %>
+  <% end %>
+  <%= tag.span convert.message %>
+<% end %>

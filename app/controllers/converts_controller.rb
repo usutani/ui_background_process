@@ -1,8 +1,10 @@
 class ConvertsController < ApplicationController
-  before_action :set_convert, only: %i[ show edit update destroy ]
+  before_action :set_convert, only: [:show, :edit, :update, :destroy]
 
   # GET /converts
   def index
+    @need_to_reload = Convert.need_to_reload?
+    @convert = Convert.new
     @converts = Convert.all
   end
 
@@ -24,25 +26,29 @@ class ConvertsController < ApplicationController
     @convert = Convert.new(convert_params)
 
     if @convert.save
-      redirect_to @convert, notice: "Convert was successfully created."
+      FileConvertJob.perform_later(@convert)
+      @new_convert = Convert.new
+      @notice = 'Convert was successfully created.'
     else
-      render :new, status: :unprocessable_entity
+      @need_to_reload = Convert.need_to_reload?
+      @converts = Convert.all
+      render :index, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /converts/1
   def update
     if @convert.update(convert_params)
-      redirect_to @convert, notice: "Convert was successfully updated."
+      redirect_to @convert, notice: 'Convert was successfully updated.'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
   # DELETE /converts/1
   def destroy
     @convert.destroy
-    redirect_to converts_url, notice: "Convert was successfully destroyed."
+    redirect_to converts_url, notice: 'Convert was successfully destroyed.'
   end
 
   private
@@ -53,6 +59,8 @@ class ConvertsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def convert_params
-      params.require(:convert).permit(:status, :message)
+      params.require(:convert).permit(:in_file)
+    rescue ActionController::ParameterMissing
+      nil
     end
 end

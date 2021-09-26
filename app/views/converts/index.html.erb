@@ -1,9 +1,20 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Convert</h1>
+<%= tag.div @need_to_reload.to_s, id: 'reload', hidden: false %>
+<div hidden
+     data-controller="reload"
+     data-reload-url-value="/converts/status"
+     data-reload-interval-value="1000"
+     data-action="turbo:submit-end@document->reload#startReloading"></div>
 
-<div id="converts">
-  <%= render @converts %>
+<h1>New Convert</h1>
+<div id="new_convert">
+  <%= render 'form', convert: @convert %>
 </div>
 
-<%= link_to "New convert", new_convert_path %>
+<h1>Converts</h1>
+<ul>
+  <div id="converts">
+    <%= render @converts %>
+  </div>
+</ul>

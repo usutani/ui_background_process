@@ -1,0 +1,10 @@
+<%= turbo_stream.update 'notice', @notice %>
+<%= turbo_stream.update 'reload', 'true' %>
+<%= turbo_stream.replace 'new_convert' do %>
+  <div id="new_convert">
+  <%= render 'form', convert: @new_convert %>
+  </div>
+<% end %>
+<%= turbo_stream.append 'converts' do %>
+  <%= render 'converts/convert', convert: @convert %>
+<% end %>

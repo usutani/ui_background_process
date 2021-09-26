@@ -1,0 +1,6 @@
+<% @converts.each do |convert| %>
+  <%= turbo_stream.replace convert.id do %>
+    <%= render 'converts/convert', convert: convert %>
+  <% end %>
+<% end %>
+<%= turbo_stream.update "reload", @need_to_reload.to_s %>
