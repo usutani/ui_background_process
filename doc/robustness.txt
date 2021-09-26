@@ -1,0 +1,16 @@
+@startuml robustness
+left to right direction
+
+actor ユーザー as U
+boundary 画面 as V
+control コントローラー as C1
+control ファイル変換ジョブ as C2
+entity "変換状態、ファイル" as E
+
+U --> V
+V -> C1
+C1 -> E
+C1 --> C2
+C2 -> E
+
+@enduml

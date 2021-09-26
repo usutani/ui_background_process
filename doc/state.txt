@@ -1,0 +1,15 @@
+@startuml state
+left to right direction
+
+[*] --> running
+
+state running {
+  [*] --> waiting
+  waiting -> validating
+  validating -> converting
+}
+
+running --> succeeded
+running --> failed
+
+@enduml
